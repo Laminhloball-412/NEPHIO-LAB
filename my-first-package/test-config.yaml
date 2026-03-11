@@ -1,7 +1,26 @@
-apiVersion: v1
-kind: ConfigMap
+apiVersion: kpt.dev/v1
+kind: Kptfile
 metadata:
-  name: test-config
-  namespace: production
+  name: my-app
+  annotations:
+    config.kubernetes.io/local-config: "true"
+info:
+  description: My app version 2 with improvements
+pipeline:
+  mutators:
+  - image: gcr.io/kpt-fn/set-namespace:v0.4.1
+    configMap:
+      namespace: production
+apiVersion: kpt.dev/v1
+kind: Kptfile
+metadata:
+  name: my-app
+  annotations:
+    config.kubernetes.io/local-config: "true"
+    config.kubernetes.io/index: '0'
+    config.kubernetes.io/path: 'test-config.yaml'
+    internal.config.kubernetes.io/index: '0'
+    internal.config.kubernetes.io/path: 'test-config.yaml'
+    internal.config.kubernetes.io/seqindent: 'compact'
 data:
   key: "value"
